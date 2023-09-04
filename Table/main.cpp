@@ -7,8 +7,25 @@ private:
 	int x, y;
 public:
 
-	Table(const Table&) {}
-	void Table::operator=(const Table&) {}
+	Table(const Table & other) {
+		array = new int[other.new_size];
+		new_size = other.new_size;
+		for (int i = 0; i < other.count; i++)
+			this->add_element(other.array[i]);
+	}
+
+	 void Table::operator=(const Table& other) {
+		if (this != &other) {
+			delete[] array;
+			this->count = 0;
+			array = new int[other.new_size];
+			new_size = other.new_size;
+			for (int i = 0; i < other.count; i++)
+				this->add_element(other.array[i]);;
+			return *this;
+		}
+		return *this;
+	}
 	
 
 	Table(int a, int b): x(a), y(b) 
@@ -43,6 +60,7 @@ public:
 	
 };
 
+
 int main() {
 	auto test = Table<int>(2, 3);
 	test[0][0] = 4;
@@ -50,8 +68,8 @@ int main() {
 
 	Table<int> t1(2, 3);
 	Table<int> t2(2, 3);
-
-	t1 = t2;
-
+	
+	//t1 = t2;
+	
 	return 0;
 }

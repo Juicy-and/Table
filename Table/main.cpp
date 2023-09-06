@@ -7,27 +7,6 @@ private:
 	int x, y;
 public:
 
-	Table(const Table & other) {
-		array = new int[other.new_size];
-		new_size = other.new_size;
-		for (int i = 0; i < other.count; i++)
-			this->add_element(other.array[i]);
-	}
-
-	 void Table::operator=(const Table& other) {
-		if (this != &other) {
-			delete[] array;
-			this->count = 0;
-			array = new int[other.new_size];
-			new_size = other.new_size;
-			for (int i = 0; i < other.count; i++)
-				this->add_element(other.array[i]);;
-			return *this;
-		}
-		return *this;
-	}
-	
-
 	Table(int a, int b): x(a), y(b) 
 	{
 		mass = new T * [a];
@@ -50,6 +29,27 @@ public:
 		return mass = a;
 	}
 
+	Table(const Table& other) {
+		x = other.x;
+		y = other.y;
+		mass = new T * [x];
+		for (int i = 0; i < x; i++) {
+			mass[i] = new T [i];
+			}
+	}
+
+	Table& operator=(const Table& other) {
+		if (this == &other)
+			return *this;
+
+		delete[] mass;
+		mass = new T * [x];
+		for (int i = 0; i < x; i++) {
+			mass[i] = new T [i];
+		}
+		return *this;
+	}
+
 
 	~Table() 
 	{
@@ -67,9 +67,10 @@ int main() {
 	std::cout << test[0][0]; // выводит 4
 
 	Table<int> t1(2, 3);
-	Table<int> t2(2, 3);
-	
-	//t1 = t2;
+	//Table<int> t2(2,3);
+	Table<int> t2(t1);
+
+	t1 = t2;
 	
 	return 0;
 }
